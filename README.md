@@ -19,7 +19,7 @@ docker-compose up -d --build
 ```
 docker-compose -f docker-compose.yml -f docker-compose.development.yml up --build
 or
-sudo -E docker-compose -f docker-compose.yml up  --build
+sudo -E docker-compose -f docker-compose.development.yml up  --build
 ```
 
 This will expose the Flask application's endpoints on port `5001` as well as a [Flower](https://github.com/mher/flower) server for monitoring workers on port `5555`
