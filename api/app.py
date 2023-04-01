@@ -3,14 +3,18 @@ from flask import Flask, Response, request
 from flask import url_for, jsonify
 from flask_cors import CORS
 from worker import celery
-
+from flask_sqlalchemy import SQLAlchemy
 
 from redis_worker import redis_db
 from mock import mock_class_info, mock_office_hours_info
 
 dev_mode = True
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:root@db:5432/mydb'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app)
+
+sql_db = SQLAlchemy(app)
 
 
 @app.route('/add/<int:param1>/<int:param2>')

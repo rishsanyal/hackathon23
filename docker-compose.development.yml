@@ -12,6 +12,11 @@ services:
      - "5001:5001"
     depends_on:
       - redis
+      - db
+    links:
+      - db:db
+    networks:
+        - djangonetwork
     volumes: ['./api:/api']
   worker:
     build:
@@ -54,16 +59,21 @@ services:
       - '3000:3000'
     depends_on:
       - web
-  postgresql:
-    image: postgres
+  db:
+    image: postgres:13.4-alpine
     restart: always
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydb
-    ports:
-      - "5432:5432"
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data/
+    env_file:
+      - .env # The name of your environment file (the one at the repository root)
+    ports:
+      - "5418:5432"
+    networks:
+        - djangonetwork
 volumes:
   node-modules:
+
+
+networks:
+    djangonetwork:
+        driver: bridge
