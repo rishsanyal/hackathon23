@@ -3,6 +3,8 @@ from flask import Flask, Response
 from flask import url_for, jsonify
 from worker import celery
 
+from redis_worker import db
+
 dev_mode = True
 app = Flask(__name__)
 
@@ -27,6 +29,13 @@ def check_task(task_id: str) -> str:
 def health_check() -> Response:
     return jsonify("OK")
 
+@app.route('/test/<string:param1>')
+def test(param1: str) -> str:
+    db.set('param1', param1)
+    db.set('param2', 'param2')
+    print("test2")
+    return jsonify("OK")
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='0.0.0.0', port=5001, debug=True)

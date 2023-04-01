@@ -5,6 +5,9 @@ services:
       context: ./api
       dockerfile: Dockerfile
     restart: always
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_APP: ./app.py
     ports:
      - "5001:5001"
     depends_on:
