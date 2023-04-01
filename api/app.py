@@ -1,9 +1,10 @@
 import celery.states as states
-from flask import Flask, Response
+from flask import Flask, Response, request
 from flask import url_for, jsonify
 from worker import celery
 
 from redis_worker import db
+from mock import mock_class_info, mock_office_hours_info
 
 dev_mode = True
 app = Flask(__name__)
@@ -36,6 +37,22 @@ def test(param1: str) -> str:
     print("test2")
     return jsonify("OK")
 
+@app.route('/class_info', methods=['GET', 'POST'])
+def class_info() -> str:
+    return jsonify(mock_class_info.MOCK_CLASS_INFO)
+
+@app.route('/office_hours_info', methods=['GET'])
+def get_office_hours_info() -> str:
+    print("test")
+    return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
+
+@app.route('/office_hours_info', methods=['POST'])
+def post_office_hours_info() -> str:
+    user_id = request.form.get('user_id')
+    user_info = request.form.get('user_info')
+    class_id = request.form.get('class_id')
+
+    return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
