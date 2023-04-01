@@ -8,6 +8,9 @@ from flask_sqlalchemy import SQLAlchemy
 ## Login libraries
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
+from redis_worker import redis_db
+from mock import mock_class_info, mock_office_hours_info
+from redis_crud import get_students_queue, update_students_queue, delete_students_queue
 
 from flask_login import (
     LoginManager
@@ -80,3 +83,40 @@ app = create_app()
 def index():
     return "TEST"
 
+
+"""
+Redis client
+1. Create a queue
+2. Populate with mock data for now
+
+API
+1. GET queue -> Mock info
+2. Delete call queue -> pop from queue
+3. POST queue -> Add a user to the queue
+"""
+
+# @app.route('/office_hours_students_queue/<string:queue_name>', methods=['GET'])
+# def get_office_hours_students_queue(queue_name: str) -> str:
+#     curr_student_queue = get_students_queue()
+#     return jsonify(curr_student_queue)
+
+# @app.route('/office_hours_students_queue/<string:queue_name>/queue_name<string: user_id>', methods=['DELETE'])
+# def delete_office_hours_students_queue(queue_name: str, user_id: str) -> str:
+#     curr_student_queue = delete_students_queue(user_id)
+#     return jsonify(curr_student_queue)
+
+# # POST queue -> Add a user to the queue
+# # @app.route('/office_hours_students_queue', methods=['POST'])
+# # def post_office_hours_students_queue() -> str:
+# #     curr_student_queue = update_students_queue(user_info)
+# #     return jsonify(curr_student_queue)
+
+
+# @app.route('/office_hours_students_queue/<string:queue_name>/queue_name<string: user_id>', methods=['POST'])
+# def update_office_hours_students_queue(queue_name: str, user_id: str) -> str:
+#     curr_student_queue = update_students_queue(user_id)
+#     return jsonify(curr_student_queue)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5001, debug=True)
