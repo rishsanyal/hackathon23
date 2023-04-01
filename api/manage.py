@@ -21,7 +21,8 @@ def deploy():
 	"""Test"""
 	app = create_app()
 	app.app_context().push()
-	sql_db.create_all()
+	with app.app_context():
+		sql_db.create_all()
 
 	# migrate database to latest revision
 	init()

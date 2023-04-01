@@ -12,10 +12,11 @@ from wtforms.validators import InputRequired, Length, EqualTo, Email, Regexp ,Op
 from flask_login import current_user
 from wtforms import ValidationError,validators
 from auth.auth_models import User, UserProfile
+import email_validator
 
 
 class login_form(FlaskForm):
-    email = StringField(validators=[InputRequired(), Email(), Length(1, 64)])
+    # email = StringField(validators=[Email(), Length(1, 64)])
     pwd = PasswordField(validators=[InputRequired(), Length(min=8, max=72)])
     # Placeholder labels to enable form rendering
     username = StringField(

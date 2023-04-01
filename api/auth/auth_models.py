@@ -1,3 +1,4 @@
+from flask_login import UserMixin
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
@@ -9,7 +10,7 @@ from app import create_app, sql_db
 
 app = create_app()
 
-class User(sql_db.Model):
+class User(UserMixin, sql_db.Model):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
 
