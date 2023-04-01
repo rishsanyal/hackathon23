@@ -1,13 +1,16 @@
 import celery.states as states
 from flask import Flask, Response, request
 from flask import url_for, jsonify
+from flask_cors import CORS
 from worker import celery
+
 
 from redis_worker import redis_db
 from mock import mock_class_info, mock_office_hours_info
 
 dev_mode = True
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/add/<int:param1>/<int:param2>')
