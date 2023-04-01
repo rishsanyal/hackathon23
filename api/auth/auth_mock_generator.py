@@ -1,7 +1,7 @@
 import random
 
 # List of possible names and email domains
-names = [ 't1', 't2', 't3', 't4']
+names = [ 'tiya', 'piya', 'riya', 'chana']
 domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com']
 
 def generate_users() -> list:
@@ -11,7 +11,7 @@ def generate_users() -> list:
     for i in range(4):
         # Generate a random username and password
         username = names[i].lower() + str(random.randint(100, 999))
-        password = 'password' + str(random.randint(100, 999))
+        pwd = 'password' + str(random.randint(100, 999))
 
         # Generate a random full name, email, and phone number
         full_name = names[i] + ' Doe'
@@ -21,7 +21,7 @@ def generate_users() -> list:
         # Create a dictionary representing the user profile
         user_data = {
             'username': username,
-            'password': password,
+            'pwd': pwd,
             'profile': {
                 'full_name': full_name,
                 'email': email,

@@ -28,3 +28,5 @@ Werkzeug==2.2.3
 WTForms==3.0.1
 flask-script==2.0.5
 Flask-Migrate==2.6.0
+flask_bcrypt
+email_validator

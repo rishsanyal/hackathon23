@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       FLASK_DEBUG: 1
-      FLASK_APP: ./app.py
+      FLASK_APP: ./routes.py
     ports:
      - "5001:5001"
     depends_on:

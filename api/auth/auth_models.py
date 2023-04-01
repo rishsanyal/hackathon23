@@ -1,11 +1,13 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
-from app import app, sql_db
+from app import create_app, sql_db
 
 # app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:password@localhost/dbname'
 # sql_db = SQLAlchemy(app)
+
+app = create_app()
 
 class User(sql_db.Model):
     __tablename__ = 'users'
@@ -13,10 +15,13 @@ class User(sql_db.Model):
 
     id = sql_db.Column(sql_db.Integer, primary_key=True)
     username = sql_db.Column(sql_db.String(80), unique=True, nullable=False)
-    password = sql_db.Column(sql_db.String(80), nullable=False)
+    password = sql_db.Column(sql_db.String(300), nullable=False, unique=True)
+    # email = sql_db.Column(sql_db.String(120), unique=True, nullable=False)
+    # pwd = sql_db.Column(sql_db.String(300), nullable=False, unique=True)
 
     def __init__(self, username, password):
         self.username = username
+        # self.email =
         self.password = password
 
     def __repr__(self):
@@ -41,9 +46,9 @@ class UserProfile(sql_db.Model):
 with app.app_context():
     sql_db.create_all()
 
-    sql_db.session.add(User('admin', 'admin@example.com'))
-    sql_db.session.add(User('guest', 'guest@example.com'))
-    sql_db.session.commit()
+    if not User.query.filter_by(username='user1').first():
+        sql_db.session.add(User('user1', 'user1234'))
+        sql_db.session.commit()
 
     users = User.query.all()
     print(users)

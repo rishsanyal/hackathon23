@@ -1,10 +1,12 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
-from app import sql_db, app
+from app import sql_db, create_app
 
 from auth.auth_models import User, UserProfile
 from auth.auth_mock_generator import generate_users
+
+app = create_app()
 
 # app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:root@postgresql/mydb'
