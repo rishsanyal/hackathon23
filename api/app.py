@@ -80,4 +80,3 @@ app = create_app()
 def index():
     return "TEST"
 
-
