@@ -8,7 +8,7 @@ listen = ['default']
 redis_url = os.getenv('REDISTOGO_URL', 'redis://redis:6379')
 
 conn = redis.from_url(redis_url)
-db = redis.Redis(host='redis', port=6379, decode_responses=True)
+redis_db = redis.Redis(host='redis', port=6379, decode_responses=True)
 
 
 if __name__ == '__main__':

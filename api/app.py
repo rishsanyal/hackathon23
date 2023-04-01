@@ -3,7 +3,7 @@ from flask import Flask, Response, request
 from flask import url_for, jsonify
 from worker import celery
 
-from redis_worker import db
+from redis_worker import redis_db
 from mock import mock_class_info, mock_office_hours_info
 
 dev_mode = True
@@ -32,8 +32,8 @@ def health_check() -> Response:
 
 @app.route('/test/<string:param1>')
 def test(param1: str) -> str:
-    db.set('param1', param1)
-    db.set('param2', 'param2')
+    redis_db.set('param1', param1)
+    redis_db.set('param2', 'param2')
     print("test2")
     return jsonify("OK")
 

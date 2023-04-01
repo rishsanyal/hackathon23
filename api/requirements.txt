@@ -1,4 +1,6 @@
 Flask==2.0.1
 celery==5.1.2
 redis==3.5.3
-rq
+flask-login
+flask-wtf
+sqlalchemy

@@ -54,6 +54,12 @@ services:
       - '3000:3000'
     depends_on:
       - web
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
 
 volumes:
   node-modules:
