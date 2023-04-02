@@ -1,8 +1,9 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 import "./App.css";
 import ClassInfo from "./components/ClassInfo";
 import ZoomPage from "./components/ZoomPage";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
     return (
