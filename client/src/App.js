@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 import ClassInfo from "./components/ClassInfo";
@@ -10,10 +10,10 @@ function App() {
         <div className="App">
             <header className="App-header"></header>
             <Router>
-                <Switch>
-                    <Route exact path="/" component={ClassInfo} />
-                    <Route path="/zoom" component={ZoomPage} />
-                </Switch>
+                <Routes>
+                    <Route exact path="/" element={ClassInfo} />
+                    <Route path="/zoom" element={ZoomPage} />
+                </Routes>
             </Router>
         </div>
     );
