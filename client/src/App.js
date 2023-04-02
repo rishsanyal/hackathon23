@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import ClassInfo from "./components/ClassInfo";
 import ZoomPage from "./components/ZoomPage";
