@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { API_BASE_URL } from '../config';
-import { 
-    Button, 
-    Table, 
-    TableBody, 
-    TableCell, 
-    TableContainer, 
-    TableHead, 
-    TableRow, 
+import { API_BASE_URL } from "../config";
+import {
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
     Paper,
-    Select, 
+    Select,
     MenuItem,
-    Link
-} from '@mui/material';
+    Link,
+} from "@mui/material";
 
 function ClassInfo() {
     // const [classData, setClassData] = useState(null);
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState("");
     const [classData, setClassData] = useState({
         options: [],
         title: "",
@@ -28,7 +28,7 @@ function ClassInfo() {
                 // zoom_link: "Olga Link",
                 // notify: true,
                 // notify_turn: false
-            }
+            },
         ],
     });
     const [officeHoursInfo, setOfficeHoursInfo] = useState([]);
@@ -42,6 +42,10 @@ function ClassInfo() {
                 //     office_hours_info: data.office_hours_info,
                 // });
                 setOfficeHoursInfo(data.office_hours_info);
+            })
+            .catch((error) => {
+                console.log("Error fetching class info:", error);
+                // Handle the error here, such as showing an error message to the user
             });
     }, []);
     useEffect(() => {
@@ -53,10 +57,14 @@ function ClassInfo() {
                 //     ...classData,
                 //     options: data.class_info.names,
                 // });
-                setClassData(prevClassData => ({
+                setClassData((prevClassData) => ({
                     ...prevClassData,
                     options: data.class_info.names,
                 }));
+            })
+            .catch((error) => {
+                console.log("Error fetching class info:", error);
+                // Handle the error here, such as showing an error message to the user
             });
     }, []);
 
@@ -84,10 +92,14 @@ function ClassInfo() {
             title: event.target.value,
         });
     }
-    
+
     function formatTime(dateString, timeString) {
         const date = new Date(`${dateString}T${timeString}Z`);
-        const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+        const time = date.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+        });
         // perform some formatting on the text
         return time;
     }
@@ -97,13 +109,13 @@ function ClassInfo() {
     // };
     function goToExternalLink(link) {
         // open link in new tab
-        window.open(link, '_blank');
+        window.open(link, "_blank");
     }
 
     return (
         <div>
             <h1>
-                Class Name 
+                Class Name
                 <Select value={selectedOption} onChange={handleOptionChange}>
                     {classData.options.map((option) => (
                         <MenuItem key={option} value={option}>
@@ -130,29 +142,49 @@ function ClassInfo() {
                         {officeHoursInfo.map((row) => (
                             <TableRow
                                 key={row.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                sx={{
+                                    "&:last-child td, &:last-child th": {
+                                        border: 0,
+                                    },
+                                }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {row.instructor} 
+                                    {row.instructor}
                                 </TableCell>
                                 <TableCell>
                                     {/* Add a button that redirects to a link */}
-                                    <Button variant="contained" color="primary" onClick={()=>goToExternalLink(row.zoom)}> Join </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() =>
+                                            goToExternalLink(row.zoom)
+                                        }
+                                    >
+                                        {" "}
+                                        Join{" "}
+                                    </Button>
                                 </TableCell>
                                 <TableCell align="center">{row.date}</TableCell>
-                                <TableCell align="center">{formatTime(row.date, row.time)}</TableCell>
-                                <TableCell align="center"><Button variant="contained" color="primary">Notify</Button></TableCell>
-                                <TableCell align="center"><Button variant="contained" color="primary">Notify Turn</Button></TableCell>
+                                <TableCell align="center">
+                                    {formatTime(row.date, row.time)}
+                                </TableCell>
+                                <TableCell align="center">
+                                    <Button variant="contained" color="primary">
+                                        Notify
+                                    </Button>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <Button variant="contained" color="primary">
+                                        Notify Turn
+                                    </Button>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-
-            
         </div>
-
-    )
+    );
 }
 
 export default ClassInfo;
