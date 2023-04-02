@@ -14,9 +14,9 @@ function ZoomCall() {
     var sdkKey = "34lXC9oHRd21RUeUcVu5FA";
     var meetingNumber = link.match(regexMeetingNumber)[1];
     var passWord = link.match(regexMeetingPassword)[1];
-    var userName = "Reeeesh";
+    var userName = "John Doe";
     var role = 0;
-    var userEmail = "reesh232@gmail.com";
+    var userEmail = "johndoe232@gmail.com";
 
     function getSignature(e) {
         e.preventDefault();
@@ -123,7 +123,7 @@ function ZoomCall() {
     }
 
     return (
-        <div className="App">
+        <div className="zoomCall">
             <main>
                 <h3>Networks Programming - Prof. Vahab P</h3>
                 <div>

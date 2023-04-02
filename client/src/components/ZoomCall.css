@@ -4,6 +4,8 @@
     right: 0;
     margin-left: -150px;
     width: 244px; /* width of speaker and ribbon view */
+    max-width: 1000px;
+    max-height: 600px;
 }
 
 main {

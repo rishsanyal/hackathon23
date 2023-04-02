@@ -8,14 +8,14 @@ import ZoomPage from "./components/ZoomPage";
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
-                <Router>
-                    <Routes>
-                        <Route path="/" element={<ClassInfo />} />
-                        <Route path="/zoom" element={<ZoomPage />} />
-                    </Routes>
-                </Router>
-            </header>
+            {/* <header className="App-header"> */}
+            <Router>
+                <Routes>
+                    <Route path="/" element={<ClassInfo />} />
+                    <Route path="/zoom" element={<ZoomPage />} />
+                </Routes>
+            </Router>
+            {/* </header> */}
         </div>
     );
 }
