@@ -28,16 +28,16 @@ function TimerComp({ endTime }) {
     }
 
     return (
-        <div class="timeArea">
-            <div class="remainingTime">
+        <div className="timeArea">
+            <div className="remainingTime">
                 Remaining time: {timeLeft.hours}:{formatTime(timeLeft.minutes)}:
                 {formatTime(timeLeft.seconds)}
             </div>
-            <div class="averageTime">
+            <div className="averageTime">
                 Average time: {timeLeft.hours}:{formatTime(timeLeft.minutes)}:
                 {formatTime(timeLeft.seconds)}
             </div>
-            <div class="turnEstimate">
+            <div className="turnEstimate">
                 Turn Estimate: {timeLeft.hours}:{formatTime(timeLeft.minutes)}:
                 {formatTime(timeLeft.seconds)}
             </div>
