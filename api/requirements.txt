@@ -32,3 +32,4 @@ Flask-Migrate==2.6.0
 email_validator
 Flask-Bcrypt==0.7.1
 jinja2==3.0.3
+twilio.rest
