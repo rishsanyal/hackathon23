@@ -113,3 +113,4 @@ coverage-reports
 coverage*
 .DS_Store
 
+postgres-data/*
