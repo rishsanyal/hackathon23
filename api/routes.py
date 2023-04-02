@@ -4,6 +4,7 @@ from flask import url_for, jsonify
 from flask_cors import CORS
 from worker import celery
 from flask_sqlalchemy import SQLAlchemy
+from redis_crud import get_students_queue, update_students_queue, delete_students_queue
 
 from flask_bcrypt import Bcrypt,generate_password_hash, check_password_hash
 
@@ -166,18 +167,32 @@ def add(param1: int, param2: int) -> str:
 # def class_info() -> str:
 #     return jsonify(mock_class_info.MOCK_CLASS_INFO)
 
-# @app.route('/office_hours_info', methods=['GET'])
-# def get_office_hours_info() -> str:
-#     print("test")
-#     return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
+@app.route('/office_hours_info', methods=['GET'])
+def get_office_hours_info() -> str:
+    print("test")
+    return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
 
-# @app.route('/office_hours_info', methods=['POST'])
-# def post_office_hours_info() -> str:
-#     user_id = request.form.get('user_id')
-#     user_info = request.form.get('user_info')
-#     class_id = request.form.get('class_id')
+@app.route('/office_hours_info', methods=['POST'])
+def post_office_hours_info() -> str:
+    user_id = request.form.get('user_id')
+    user_info = request.form.get('user_info')
+    class_id = request.form.get('class_id')
 
-#     return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
+    return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
+
+@app.route('/get_students_queue', methods=['GET'])
+def get_students_queue() -> str:
+    return jsonify(get_students_queue())
+
+@app.route('/update_students_queue/<int:param1>', methods=['POST'])
+def update_students_queue(param1: int) -> str:
+    user_id = request.form.get('user_id')
+    return jsonify(update_students_queue(param1))
+
+@app.route('/delete_students_queue/<int:param1>', methods=['DELETE'])
+def delete_students_queue(param1: int) -> str:
+    user_id = request.form.get('user_id')
+    return jsonify(delete_students_queue(param1))
 
 
 if __name__ == '__main__':
