@@ -13,3 +13,13 @@ celery = Celery('tasks', broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND
 def add(x: int, y: int) -> int:
     time.sleep(5)
     return x + y
+
+celery.conf.beat_schedule = {
+    'add-every-30-seconds': {
+        'task': 'tasks.add',
+        'schedule': 30.0,
+        'args': (16, 16)
+    },
+}
+
+celery.conf.timezone = 'UTC'

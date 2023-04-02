@@ -31,6 +31,20 @@ services:
     volumes: ['./celery-queue:/queue']
     networks:
         - djangonetwork
+  beat:
+    build:
+      context: ./celery-queue
+      dockerfile: Dockerfile.dev
+    command: celery -A tasks beat
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379
+      CELERY_RESULT_BACKEND: redis://redis:6379
+    depends_on:
+      - redis
+    volumes: ['./celery-queue:/queue']
+    networks:
+        - djangonetwork
+
   monitor:
     build:
       context: ./celery-queue

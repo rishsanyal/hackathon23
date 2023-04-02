@@ -54,6 +54,12 @@ def add(param1: int, param2: int) -> str:
     return "Ok"
 
 
+@app.route('/office_hours_info', methods=['GET'])
+def get_office_hours_info() -> str:
+    print("test")
+    return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
+
+
 @app.before_request
 def session_handler():
     session.permanent = True
@@ -164,11 +170,6 @@ def logout():
 # @app.route('/class_info', methods=['GET', 'POST'])
 # def class_info() -> str:
 #     return jsonify(mock_class_info.MOCK_CLASS_INFO)
-
-# @app.route('/office_hours_info', methods=['GET'])
-# def get_office_hours_info() -> str:
-#     print("test")
-#     return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
 
 # @app.route('/office_hours_info', methods=['POST'])
 # def post_office_hours_info() -> str:
