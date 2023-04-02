@@ -6,11 +6,12 @@ from worker import celery
 from flask_sqlalchemy import SQLAlchemy
 from redis_crud import get_students_queue, update_students_queue, delete_students_queue
 
-from flask_bcrypt import Bcrypt,generate_password_hash, check_password_hash
+from flask_bcrypt import bcrypt,generate_password_hash, check_password_hash
 
 from flask_login import (
     logout_user,
     login_required,
+    login_user
 )
 
 
@@ -39,13 +40,26 @@ from werkzeug.routing import BuildError
 from redis_worker import redis_db
 from mock import mock_class_info, mock_office_hours_info
 
-from app import create_app, login_manager
+from app import create_app, login_manager, sql_db
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
 app = create_app()
+
+## CELERY API JOBS
+@app.route('/add/<int:param1>/<int:param2>')
+def add(param1: int, param2: int) -> str:
+    task = celery.send_task('tasks.add', args=[param1, param2], kwargs={})
+    return "Ok"
+
+
+@app.route('/office_hours_info', methods=['GET'])
+def get_office_hours_info() -> str:
+    print("test")
+    return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
+
 
 @app.before_request
 def session_handler():
@@ -63,8 +77,8 @@ def login():
 
     if form.validate_on_submit():
         try:
-            user = User.query.filter_by(email=form.email.data).first()
-            if check_password_hash(user.pwd, form.pwd.data):
+            user = User.query.filter_by(username=form.username.data).first()
+            if user.password == form.pwd.data:
                 login_user(user)
                 return redirect(url_for('index'))
             else:
@@ -87,14 +101,14 @@ def register():
     form = register_form()
     if form.validate_on_submit():
         try:
-            email = form.email.data
+            # email = form.email.data
             pwd = form.pwd.data
             username = form.username.data
 
             newuser = User(
                 username=username,
-                email=email,
-                pwd=bcrypt.generate_password_hash(pwd),
+                # email=email,
+                password=pwd,
             )
 
             sql_db.session.add(newuser)
@@ -134,15 +148,6 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/add/<int:param1>/<int:param2>')
-def add(param1: int, param2: int) -> str:
-    """
-    This is the route that will be called by the client to start the task."""
-    task = celery.send_task('tasks.add', args=[param1, param2], kwargs={})
-    response = f"<a href='{url_for('check_task', task_id=task.id, external=True)}'>check status of {task.id} </a>"
-    return response
-
-
 # @app.route('/check/<string:task_id>')
 # def check_task(task_id: str) -> str:
 #     res = celery.AsyncResult(task_id)
@@ -177,6 +182,11 @@ def post_office_hours_info() -> str:
     user_id = request.form.get('user_id')
     user_info = request.form.get('user_info')
     class_id = request.form.get('class_id')
+# @app.route('/office_hours_info', methods=['POST'])
+# def post_office_hours_info() -> str:
+#     user_id = request.form.get('user_id')
+#     user_info = request.form.get('user_info')
+#     class_id = request.form.get('class_id')
 
     return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
 

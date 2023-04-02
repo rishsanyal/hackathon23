@@ -56,9 +56,14 @@ login_manager.login_view = "login"
 login_manager.login_message_category = "info"
 
 migrate = Migrate()
-bcrypt = Bcrypt()
 
 def actually_create_app():
+    ## TODO: What is this shit, remove it.
+    """Create the app.
+
+    Returns:
+        _type_: _description_
+    """
     app = Flask(__name__)
 
     app.secret_key = 'secret-key'
@@ -70,6 +75,8 @@ def actually_create_app():
     login_manager.init_app(app)
     sql_db.init_app(app)
     migrate.init_app(app, sql_db)
+
+    bcrypt = Bcrypt(app)
     bcrypt.init_app(app)
 
     return app
