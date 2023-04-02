@@ -194,16 +194,15 @@ def post_office_hours_info() -> str:
 def get_students_queue() -> str:
     return jsonify(get_students_queue())
 
-@app.route('/update_students_queue/<int:param1>', methods=['POST'])
-def update_students_queue(param1: int) -> str:
+@app.route('/update_students_queue/<string:param1>', methods=['POST'])
+def update_students_queue(param1: str) -> str:
     user_id = request.form.get('user_id')
     return jsonify(update_students_queue(param1))
 
-@app.route('/delete_students_queue/<int:param1>', methods=['DELETE'])
-def delete_students_queue(param1: int) -> str:
+@app.route('/delete_students_queue/<string:param1>', methods=['DELETE'])
+def delete_students_queue(param1: str) -> str:
     user_id = request.form.get('user_id')
     return jsonify(delete_students_queue(param1))
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
