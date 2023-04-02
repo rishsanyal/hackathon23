@@ -4,8 +4,8 @@ from flask import url_for, jsonify
 from flask_cors import CORS
 from worker import celery
 from flask_sqlalchemy import SQLAlchemy
-from redis_crud import get_students_queue, \
-update_students_queue, delete_students_queue, \
+from redis_crud import get_students_oh_queue, \
+add_student_to_oh_queue, delete_students_queue, \
 add_student_notification_office_hours, get_all_student_notification_office_hours
 
 from flask_bcrypt import bcrypt,generate_password_hash, check_password_hash
@@ -116,6 +116,10 @@ def register():
             sql_db.session.add(newuser)
             sql_db.session.commit()
             flash(f"Account Succesfully created", "success")
+
+            ## Add user info to redis
+            add_student_to_oh_queue(newuser.id, newuser.username)
+
             return redirect(url_for("login"))
 
         except InvalidRequestError:
@@ -158,11 +162,28 @@ def post_notification_office_hours() -> str:
     office_hours_id = request.args.get('office_hours_id')
     class_id = request.args.get('class_id')
 
+    if not user_id or not office_hours_id or not class_id:
+        return jsonify("Missing parameters"), 400
+
     return jsonify(add_student_notification_office_hours(user_id, office_hours_id, class_id))
+
 
 @app.route('/notification_office_hours', methods=['GET'])
 def get_all_notification_oh() -> str:
     return jsonify(get_all_student_notification_office_hours())
+
+@app.route('/notification_office_hours', methods=['POST'])
+def post_notification_office_hours_turn() -> str:
+    """Add student for office hours notifications"""
+
+    user_id = request.args.get('user_id')
+    office_hours_id = request.args.get('office_hours_id')
+    class_id = request.args.get('class_id')
+
+    if not user_id or not office_hours_id or not class_id:
+        return jsonify("Missing parameters"), 400
+
+    return jsonify(add_student_notification_office_hours(user_id, office_hours_id, class_id))
 
 
 # @app.route('/check/<string:task_id>')
@@ -196,25 +217,32 @@ def class_info() -> str:
 
 @app.route('/office_hours_info', methods=['POST'])
 def post_office_hours_info() -> str:
+    """Add office hours notification to the queue"""
+
     user_id = request.form.get('user_id')
     user_info = request.form.get('user_info')
     class_id = request.form.get('class_id')
-# @app.route('/office_hours_info', methods=['POST'])
-# def post_office_hours_info() -> str:
-#     user_id = request.form.get('user_id')
-#     user_info = request.form.get('user_info')
-#     class_id = request.form.get('class_id')
 
     return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
 
 @app.route('/get_students_queue', methods=['GET'])
 def get_students_queue() -> str:
-    return jsonify(get_students_queue())
+    """Get students queue for office hours"""""
 
-@app.route('/update_students_queue/<string:param1>', methods=['POST'])
-def update_students_queue(param1: str) -> str:
-    user_id = request.form.get('user_id')
-    return jsonify(update_students_queue(param1))
+    office_hours_id = request.args.get('office_hours_id')
+
+    if not office_hours_id:
+        return jsonify("Missing parameters"), 400
+
+    return jsonify(get_students_oh_queue(office_hours_id))
+
+@app.route('/update_students_queue', methods=['POST'])
+def update_students_queue() -> str:
+    user_id = request.args.get('user_id')
+    office_hours_id = request.args.get('office_hours_id')
+
+    add_student_to_oh_queue(user_id, office_hours_id)
+    return jsonify("Student add to OH queue.")
 
 @app.route('/delete_students_queue/<string:param1>', methods=['DELETE'])
 def delete_students_queue(param1: str) -> str:
