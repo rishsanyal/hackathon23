@@ -8,7 +8,8 @@ import ZoomPage from "./components/ZoomPage";
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
+            <header className="App-header"></header>
+            <Router>
                 <nav>
                     <ul>
                         <li>
@@ -19,8 +20,6 @@ function App() {
                         </li>
                     </ul>
                 </nav>
-            </header>
-            <Router>
                 <Routes>
                     <Route path="/" element={<ClassInfo />} />
                     <Route path="/zoom" element={<ZoomPage />} />
