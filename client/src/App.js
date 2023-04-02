@@ -11,8 +11,8 @@ function App() {
             <header className="App-header"></header>
             <Router>
                 <Routes>
-                    <Route exact path="/" element={ClassInfo} />
-                    <Route path="/zoom" element={ZoomPage} />
+                    <Route path="/" element={<ClassInfo />} />
+                    <Route path="/zoom" element={<ZoomPage />} />
                 </Routes>
             </Router>
         </div>
