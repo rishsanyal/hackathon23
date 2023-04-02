@@ -31,21 +31,24 @@ MOCK_OFFICE_HOURS_INFO = {
             "time": str(new_time_obj).split(" ")[1],
             "end_time": str(new_time_obj2).split(" ")[1],
             "date": new_date_obj.isoformat(),
-            "zoom": zoom_link
+            "zoom": zoom_link,
+            "oh_id": 1
         },
         {
             "join": True,
             "time": str(new_time_obj).split(" ")[1],
             "end_time": str(new_time_obj2).split(" ")[1],
             "date": (new_date_obj + three_days).isoformat(),
-            "zoom": zoom_link
+            "zoom": zoom_link,
+            "oh_id": 2
         },
         {
             "join": True,
             "time": str(new_time_obj).split(" ")[1],
             "end_time": str(new_time_obj2).split(" ")[1],
             "date": (new_date_obj + three_days + three_days).isoformat(),
-            "zoom": zoom_link
+            "zoom": zoom_link,
+            "oh_id": 3
         }
     ]
 }

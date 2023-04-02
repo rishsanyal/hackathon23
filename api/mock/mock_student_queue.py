@@ -10,7 +10,8 @@ USER_INFO = [
         'queue_notification_status': False,
         'class_ids_for_notification': [
             1, 2
-        ]
+        ],
+
     },
     {
         'user_id': '2',
@@ -21,7 +22,7 @@ USER_INFO = [
         'oh_notification_status': False,
         'queue_notification_status': False,
         'class_ids_for_notification': [
-            1, 2
+            1, 3
         ]
 
     },
@@ -34,7 +35,7 @@ USER_INFO = [
         'oh_notification_status': False,
         'queue_notification_status': False,
         'class_ids_for_notification': [
-            1, 2
+            2, 3
         ]
     },
     {
@@ -46,7 +47,7 @@ USER_INFO = [
         'oh_notification_status': False,
         'queue_notification_status': False,
         'class_ids_for_notification': [
-            1, 2
+            1, 3
         ]
     }
 ]

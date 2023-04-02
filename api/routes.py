@@ -4,7 +4,9 @@ from flask import url_for, jsonify
 from flask_cors import CORS
 from worker import celery
 from flask_sqlalchemy import SQLAlchemy
-from redis_crud import get_students_queue, update_students_queue, delete_students_queue
+from redis_crud import get_students_queue, \
+update_students_queue, delete_students_queue, \
+add_student_notification_office_hours, get_all_student_notification_office_hours
 
 from flask_bcrypt import bcrypt,generate_password_hash, check_password_hash
 
@@ -148,6 +150,21 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route('/notification_office_hours', methods=['POST'])
+def post_notification_office_hours() -> str:
+    """Add student for office hours notifications"""
+
+    user_id = request.args.get('user_id')
+    office_hours_id = request.args.get('office_hours_id')
+    class_id = request.args.get('class_id')
+
+    return jsonify(add_student_notification_office_hours(user_id, office_hours_id, class_id))
+
+@app.route('/notification_office_hours', methods=['GET'])
+def get_all_notification_oh() -> str:
+    return jsonify(get_all_student_notification_office_hours())
+
+
 # @app.route('/check/<string:task_id>')
 # def check_task(task_id: str) -> str:
 #     res = celery.AsyncResult(task_id)
@@ -172,10 +189,10 @@ def logout():
 def class_info() -> str:
     return jsonify(mock_class_info.MOCK_CLASS_INFO)
 
-@app.route('/office_hours_info', methods=['GET'])
-def get_office_hours_info() -> str:
-    print("test")
-    return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
+# @app.route('/office_hours_info', methods=['GET'])
+# def get_office_hours_info() -> str:
+#     print("test")
+#     return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
 
 @app.route('/office_hours_info', methods=['POST'])
 def post_office_hours_info() -> str:
