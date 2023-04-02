@@ -1,0 +1,26 @@
+.timeArea {
+    width: 1000px;
+    border-radius: 10px;
+    background-color: #363636;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 15px 30px;
+    margin-left: 5%;
+    margin-top: 30px;
+    display: flex;
+}
+
+.remainingTime {
+    flex-basis: 33.33%;
+    text-align: center;
+}
+
+.averageTime {
+    flex-basis: 33.33%;
+    text-align: center;
+}
+
+.turnEstimate {
+    flex-basis: 33.33%;
+    text-align: center;
+}

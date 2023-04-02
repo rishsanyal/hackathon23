@@ -1,0 +1,7 @@
+#meetingSDKElement {
+    top: 59px !important;
+    left: 0 !important;
+    right: 0;
+    margin-left: -150px;
+    width: 244px; /* width of speaker and ribbon view */
+}
