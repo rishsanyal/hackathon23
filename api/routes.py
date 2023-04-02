@@ -168,9 +168,9 @@ def logout():
 #     print("test2")
 #     return jsonify("OK")
 
-# @app.route('/class_info', methods=['GET', 'POST'])
-# def class_info() -> str:
-#     return jsonify(mock_class_info.MOCK_CLASS_INFO)
+@app.route('/class_info', methods=['GET', 'POST'])
+def class_info() -> str:
+    return jsonify(mock_class_info.MOCK_CLASS_INFO)
 
 @app.route('/office_hours_info', methods=['GET'])
 def get_office_hours_info() -> str:

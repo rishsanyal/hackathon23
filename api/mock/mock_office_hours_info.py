@@ -22,23 +22,23 @@ new_date_obj = curr_date_obj + three_days
 
 MOCK_OFFICE_HOURS_INFO = {
     "office_hours_info": [
-        [
-            { "join": True },
-            { "time": str(new_time_obj).split(" ")[1]},
-            { "date": new_date_obj.isoformat()},
-            { "zoom": zoom_link}
-        ],
-        [
-            { "join": True },
-            { "time": str(new_time_obj).split(" ")[1]},
-            { "date": (new_date_obj + three_days).isoformat()},
-            { "zoom": zoom_link}
-        ],
-        [
-            { "join": True },
-            { "time": str(new_time_obj).split(" ")[1]},
-            { "date": (new_date_obj + three_days + three_days).isoformat()},
-            { "zoom": zoom_link}
-        ]
+        {
+            "join": True,
+            "time": str(new_time_obj).split(" ")[1],
+            "date": new_date_obj.isoformat(),
+            "zoom": zoom_link
+        },
+        {
+            "join": True,
+            "time": str(new_time_obj).split(" ")[1],
+            "date": (new_date_obj + three_days).isoformat(),
+            "zoom": zoom_link
+        },
+        {
+            "join": True,
+            "time": str(new_time_obj).split(" ")[1],
+            "date": (new_date_obj + three_days + three_days).isoformat(),
+            "zoom": zoom_link
+        }
     ]
 }
