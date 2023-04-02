@@ -4,8 +4,14 @@ from flask import url_for, jsonify
 from flask_cors import CORS
 from worker import celery
 from flask_sqlalchemy import SQLAlchemy
+<<<<<<< HEAD
 from redis_crud import get_students_oh_queue, \
 add_student_to_oh_queue, delete_students_queue, \
+=======
+from redis_crud_helper import add_student_info
+from redis_crud import get_students_oh_queue, \
+add_student_to_oh_queue, delete_student_from_oh_queue, \
+>>>>>>> a4ccf60 (Removing python bug)
 add_student_notification_office_hours, get_all_student_notification_office_hours
 
 from flask_bcrypt import bcrypt,generate_password_hash, check_password_hash
@@ -118,7 +124,7 @@ def register():
             flash(f"Account Succesfully created", "success")
 
             ## Add user info to redis
-            add_student_to_oh_queue(newuser.id, newuser.username)
+            add_student_info(int(newuser.id), newuser.username)
 
             return redirect(url_for("login"))
 
@@ -230,6 +236,7 @@ def get_students_queue() -> str:
     """Get students queue for office hours"""""
 
     office_hours_id = request.args.get('office_hours_id')
+<<<<<<< HEAD
 
     if not office_hours_id:
         return jsonify("Missing parameters"), 400
@@ -243,11 +250,37 @@ def update_students_queue() -> str:
 
     add_student_to_oh_queue(user_id, office_hours_id)
     return jsonify("Student add to OH queue.")
+=======
+>>>>>>> a4ccf60 (Removing python bug)
 
-@app.route('/delete_students_queue/<string:param1>', methods=['DELETE'])
-def delete_students_queue(param1: str) -> str:
-    user_id = request.form.get('user_id')
-    return jsonify(delete_students_queue(param1))
+    if not office_hours_id:
+        return jsonify("Missing parameters"), 400
+
+    return jsonify(get_students_oh_queue(office_hours_id))
+
+@app.route('/update_students_queue', methods=['POST'])
+def update_students_queue() -> str:
+    user_id = request.args.get('user_id')
+    office_hours_id = request.args.get('office_hours_id')
+
+    if not user_id or not office_hours_id:
+        return jsonify("Missing parameters"), 400
+
+    add_student_to_oh_queue(user_id, office_hours_id)
+    return jsonify("Student add to OH queue.")
+
+@app.route('/delete_students_queue', methods=['DELETE'])
+def delete_student_from_queue() -> str:
+    """Delete the student from office hours queue.
+       We could use the student ID to double check if the student is in the queue.
+    """
+
+    office_hours_id = request.args.get('office_hours_id')
+
+    if not office_hours_id:
+        return jsonify("Missing parameters"), 400
+
+    return jsonify(delete_student_from_oh_queue(office_hours_id))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

@@ -2,6 +2,16 @@ from redis_worker import redis_db
 
 USERINFO_QUEUE = "userinfo_"
 
+def get_all_usernames() -> str:
+    """Get all student names from redis.
+
+    Returns:
+        str: Student names
+    """
+
+    # Get all student names from redis
+    return redis_db.keys(USERINFO_QUEUE + '*')
+
 def get_student_name_from_id(user_id: int) -> str:
     """Get student name from user id.
 
@@ -11,7 +21,7 @@ def get_student_name_from_id(user_id: int) -> str:
 
     # Get student name from redis given a user_id
 
-    return redis_db.get(USERINFO_QUEUE + f'{user_id}').decode('utf-8')
+    return redis_db.get(USERINFO_QUEUE + f'{user_id}')
 
 def add_student_info(user_id: int, username: str) -> None:
     """Add student info to redis.

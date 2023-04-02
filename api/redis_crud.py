@@ -1,6 +1,8 @@
 import redis
 import json
+
 from redis_worker import redis_db
+from redis_crud_helper import get_student_name_from_id, add_student_info
 from mock import mock_student_queue
 
 # Connect to Redis
@@ -22,6 +24,9 @@ def populate_user_info_queue(queue_name=QUEUE_NAME) -> None:
     redis_db.flushdb()
     for user in mock_student_queue.USER_INFO:
         redis_db.lpush(queue_name, json.dumps(user))
+        add_student_info(int(user['user_id']), user['user_name'])
+
+# TEST FUNCTIONS ##
 
 def print_user_info_queue(queue_name=QUEUE_NAME) -> None:
     """Print the queue."""
@@ -37,6 +42,7 @@ def print_test() -> None:
     """Test function to print mock data."""
     print(mock_student_queue.USER_INFO)
 
+## OFFICE HOURS RELATED FUNCTIONS ##
 
 def get_students_oh_queue(office_hours_id: int, queue_name=OH_STUDENT_QUEUE) -> list:
     """Get the current queue of students for an OH session.
@@ -45,8 +51,14 @@ def get_students_oh_queue(office_hours_id: int, queue_name=OH_STUDENT_QUEUE) -> 
         queue_name (str, optional): Name of the queue. Defaults to QUEUE_NAME.
     """
     student_ids = redis_db.lrange(queue_name+f"{office_hours_id}", 0, -1)
-    get_student_name_from_id(student_ids)
-    return student_ids
+
+    student_names = []
+
+    for student_id in student_ids:
+        student_name = get_student_name_from_id(student_id)
+        student_names.append(student_name)
+
+    return student_names
 
 def add_student_to_oh_queue(user_id: str, office_hours_id: int, queue_name=OH_STUDENT_QUEUE) -> None:
     """Update the queue of students. Add a student to the queue.
@@ -66,7 +78,7 @@ def add_student_to_oh_queue(user_id: str, office_hours_id: int, queue_name=OH_ST
     redis_db.lpush(queue_name + f'{office_hours_id}', user_id)
 
 
-def delete_students_queue(user_id: str, queue_name=QUEUE_NAME) -> None:
+def delete_student_from_oh_queue(office_hours_id: int, queue_name=QUEUE_NAME) -> None:
     """Delete a student from the queue.
 
     Args:
@@ -80,7 +92,8 @@ def delete_students_queue(user_id: str, queue_name=QUEUE_NAME) -> None:
             break
     if curr is None:
         raise ValueError('User not found')
-    redis_db.lrem(queue_name, 0, json.dumps(curr))
+
+    return(redis_db.lrem(queue_name + f'{office_hours_id}', 0, json.dumps(curr)))
 
 def add_student_notification_office_hours(user_id: int, class_id: int, office_hour_id: int) -> None:
     """Add a student to the notification list for office hours.

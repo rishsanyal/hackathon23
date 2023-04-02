@@ -32,7 +32,9 @@ MOCK_OFFICE_HOURS_INFO = {
             "end_time": str(new_time_obj2).split(" ")[1],
             "date": new_date_obj.isoformat(),
             "zoom": zoom_link,
-            "oh_id": 1
+            "oh_id": 1,
+            "class_id": 2,
+            "class_name": "CS 233",
         },
         {
             "join": True,
@@ -40,7 +42,9 @@ MOCK_OFFICE_HOURS_INFO = {
             "end_time": str(new_time_obj2).split(" ")[1],
             "date": (new_date_obj + three_days).isoformat(),
             "zoom": zoom_link,
-            "oh_id": 2
+            "oh_id": 2,
+            "class_id": 3,
+            "class_name": "CS 235",
         },
         {
             "join": True,
@@ -48,7 +52,9 @@ MOCK_OFFICE_HOURS_INFO = {
             "end_time": str(new_time_obj2).split(" ")[1],
             "date": (new_date_obj + three_days + three_days).isoformat(),
             "zoom": zoom_link,
-            "oh_id": 3
+            "oh_id": 3,
+            "class_id": 5,
+            "class_name": "CS 237",
         }
     ]
 }
