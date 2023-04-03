@@ -13,6 +13,7 @@ import {
     MenuItem,
     Link,
 } from "@mui/material";
+import NotificationTurn from "./NotificationTurn";
 
 function ClassInfo() {
     // const [classData, setClassData] = useState(null);
@@ -31,6 +32,9 @@ function ClassInfo() {
             },
         ],
     });
+    const [notificationState, setNotificationState] = useState(false);
+    // const [turnNotificationState, setTurnNotificationState] = useState(false);
+
     const [officeHoursInfo, setOfficeHoursInfo] = useState([]);
 
     useEffect(() => {
@@ -115,8 +119,11 @@ function ClassInfo() {
     return (
         <div>
             <h1>
-                Class Name
-                <Select value={selectedOption} onChange={handleOptionChange}>
+                <Select
+                    value={selectedOption}
+                    onChange={handleOptionChange}
+                    label="Class info"
+                >
                     {classData.options.map((option) => (
                         <MenuItem key={option} value={option}>
                             {option}
@@ -130,8 +137,7 @@ function ClassInfo() {
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow key={0}>
-                            <TableCell>Instructor</TableCell>
-                            <TableCell></TableCell>
+                            <TableCell aling="center">Join</TableCell>
                             <TableCell align="center">Date</TableCell>
                             <TableCell align="center">Time</TableCell>
                             <TableCell align="center">Notify</TableCell>
@@ -148,9 +154,9 @@ function ClassInfo() {
                                     },
                                 }}
                             >
-                                <TableCell component="th" scope="row">
+                                {/* <TableCell component="th" scope="row">
                                     {row.instructor}
-                                </TableCell>
+                                </TableCell> */}
                                 <TableCell>
                                     {/* Add a button that redirects to a link */}
                                     <Button
@@ -169,14 +175,10 @@ function ClassInfo() {
                                     {formatTime(row.date, row.time)}
                                 </TableCell>
                                 <TableCell align="center">
-                                    <Button variant="contained" color="primary">
-                                        Notify
-                                    </Button>
+                                <NotificationTurn message={"You will be notified when your office hours start!"}></NotificationTurn>
                                 </TableCell>
                                 <TableCell align="center">
-                                    <Button variant="contained" color="primary">
-                                        Notify Turn
-                                    </Button>
+                                    <NotificationTurn message={"You will be notified when your estimated turn comes up!"}></NotificationTurn>
                                 </TableCell>
                             </TableRow>
                         ))}

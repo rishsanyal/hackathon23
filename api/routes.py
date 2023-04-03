@@ -4,14 +4,9 @@ from flask import url_for, jsonify
 from flask_cors import CORS
 from worker import celery
 from flask_sqlalchemy import SQLAlchemy
-<<<<<<< HEAD
-from redis_crud import get_students_oh_queue, \
-add_student_to_oh_queue, delete_students_queue, \
-=======
 from redis_crud_helper import add_student_info
 from redis_crud import get_students_oh_queue, \
 add_student_to_oh_queue, delete_student_from_oh_queue, \
->>>>>>> a4ccf60 (Removing python bug)
 add_student_notification_office_hours, get_all_student_notification_office_hours
 
 from flask_bcrypt import bcrypt,generate_password_hash, check_password_hash
@@ -236,30 +231,28 @@ def get_students_queue() -> str:
     """Get students queue for office hours"""""
 
     office_hours_id = request.args.get('office_hours_id')
-<<<<<<< HEAD
 
     if not office_hours_id:
         return jsonify("Missing parameters"), 400
 
     return jsonify(get_students_oh_queue(office_hours_id))
 
-@app.route('/update_students_queue', methods=['POST'])
-def update_students_queue() -> str:
-    user_id = request.args.get('user_id')
-    office_hours_id = request.args.get('office_hours_id')
+# # @app.route('/update_students_queue', methods=['POST'])
+# # def update_students_queue() -> str:
+# #     user_id = request.args.get('user_id')
+# #     office_hours_id = request.args.get('office_hours_id')
 
-    add_student_to_oh_queue(user_id, office_hours_id)
-    return jsonify("Student add to OH queue.")
-=======
->>>>>>> a4ccf60 (Removing python bug)
+# #     add_student_to_oh_queue(user_id, office_hours_id)
+# #     return jsonify("Student add to OH queue.")
 
-    if not office_hours_id:
-        return jsonify("Missing parameters"), 400
+# #     if not office_hours_id:
+# #         return jsonify("Missing parameters"), 400
 
-    return jsonify(get_students_oh_queue(office_hours_id))
+#     return jsonify(get_students_oh_queue(office_hours_id))
 
 @app.route('/update_students_queue', methods=['POST'])
 def update_students_queue() -> str:
+    """Add students to the OH queue"""
     user_id = request.args.get('user_id')
     office_hours_id = request.args.get('office_hours_id')
 
