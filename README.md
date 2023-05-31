@@ -35,6 +35,13 @@ To shut down:
 docker-compose down
 ```
 
+To interact with the backend using shell:
+```bash
+docker-compose exec web flask shell
+```
+
+    This probably needs some work like auto-complete, auto-importing of models, etc.
+
 
 To change the endpoints, update the code in [api/app.py](api/app.py)
 

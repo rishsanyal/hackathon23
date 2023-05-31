@@ -42,14 +42,14 @@ def print_test() -> None:
     """Test function to print mock data."""
     print(mock_student_queue.USER_INFO)
 
-## OFFICE HOURS RELATED FUNCTIONS ##
+## OFFICE HOURS RELATED FUNCTIONS
 
 def get_students_oh_queue(office_hours_id: int, queue_name=OH_STUDENT_QUEUE) -> list:
-    """Get the current queue of students for an OH session.
+    # """Get the current queue of students for an OH session.
 
-    Args:
-        queue_name (str, optional): Name of the queue. Defaults to QUEUE_NAME.
-    """
+    # Args:
+    #     queue_name (str, optional): Name of the queue. Defaults to QUEUE_NAME.
+    # """
     student_ids = redis_db.lrange(queue_name+f"{office_hours_id}", 0, -1)
 
     student_names = []
@@ -61,11 +61,8 @@ def get_students_oh_queue(office_hours_id: int, queue_name=OH_STUDENT_QUEUE) -> 
     return student_names
 
 def add_student_to_oh_queue(user_id: str, office_hours_id: int, queue_name=OH_STUDENT_QUEUE) -> None:
-    """Update the queue of students. Add a student to the queue.
+    """Update the queue of students. Add a student to the queue."""
 
-    Args
-        user_id (str): ID of the student to add to the queue.
-    """
     curr = None
     # for i in mock_student_queue.USER_INFO:
     #     if i['user_id'] == user_id:
@@ -78,7 +75,7 @@ def add_student_to_oh_queue(user_id: str, office_hours_id: int, queue_name=OH_ST
     redis_db.lpush(queue_name + f'{office_hours_id}', user_id)
 
 
-def delete_student_from_oh_queue(office_hours_id: int, queue_name=QUEUE_NAME) -> None:
+def delete_student_from_oh_queue(office_hours_id: int, queue_name=QUEUE_NAME) -> int:
     """Delete a student from the queue.
 
     Args:
@@ -95,7 +92,7 @@ def delete_student_from_oh_queue(office_hours_id: int, queue_name=QUEUE_NAME) ->
 
     return(redis_db.lrem(queue_name + f'{office_hours_id}', 0, json.dumps(curr)))
 
-def add_student_notification_office_hours(user_id: int, class_id: int, office_hour_id: int) -> None:
+def add_student_notification_office_hours(user_id: int, class_id: int, office_hour_id: int):
     """Add a student to the notification list for office hours.
 
     Args:
@@ -104,7 +101,7 @@ def add_student_notification_office_hours(user_id: int, class_id: int, office_ho
     """
     redis_db.sadd(f'oh_notification_{class_id}_{office_hour_id}', user_id)
 
-def remove_student_notification_office_hours(user_id: int, class_id: int, office_hour_id: int) -> None:
+def remove_student_notification_office_hours(user_id: int, class_id: int, office_hour_id: int):
     """Remove a student from the notification list for office hours.
 
     Args:
@@ -114,7 +111,7 @@ def remove_student_notification_office_hours(user_id: int, class_id: int, office
     redis_db.srem(f'oh_notification_{class_id}_{office_hour_id}', user_id)
 
 
-def add_student_notification_office_hours_turn(user_id: int, class_id: int, office_hour_id: int) -> None:
+def add_student_notification_office_hours_turn(user_id: int, class_id: int, office_hour_id: int):
     """Add a student to the notification list for office hours turn.
 
     Args:
@@ -123,7 +120,7 @@ def add_student_notification_office_hours_turn(user_id: int, class_id: int, offi
     """
     redis_db.sadd(OH_TURN_NOTIFICATION + f'{class_id}_{office_hour_id}', user_id)
 
-def remove_student_notification_office_hours_turn(user_id: int, class_id: int, office_hour_id: int) -> None:
+def remove_student_notification_office_hours_turn(user_id: int, class_id: int, office_hour_id: int):
     """Remove a student from the notification list for office hours turn.
 
     Args:
@@ -132,7 +129,7 @@ def remove_student_notification_office_hours_turn(user_id: int, class_id: int, o
     """
     redis_db.srem(OH_TURN_NOTIFICATION + f'{class_id}_{office_hour_id}', user_id)
 
-def get_all_student_notification_office_hours() -> dict:
+def get_all_student_notification_office_hours():
     """Get the notification status of a student for office hours.
 
     Args:
@@ -153,7 +150,7 @@ def get_all_student_notification_office_hours() -> dict:
     return office_hours_list
 
 
-def get_office_hours_students_queue(office_hour_id: int) -> list:
+def get_office_hours_students_queue(office_hour_id: int):
     """Get the current queue of students for an OH session.
 
     Args:

@@ -175,7 +175,7 @@ function ClassInfo() {
                                     {formatTime(row.date, row.time)}
                                 </TableCell>
                                 <TableCell align="center">
-                                <NotificationTurn message={"You will be notified when your office hours start!"}></NotificationTurn>
+                                <NotificationTurn  message={"You will be notified when your office hours start!"}></NotificationTurn>
                                 </TableCell>
                                 <TableCell align="center">
                                     <NotificationTurn message={"You will be notified when your estimated turn comes up!"}></NotificationTurn>
