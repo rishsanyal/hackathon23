@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import "./TimerComp.css";
 
-function TimerComp({ endTime }) {
+function TimerComp({ endTime, office_hours_id }) {
     const [timeLeft, setTimeLeft] = useState(getTimeLeft());
 
     useEffect(() => {

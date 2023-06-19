@@ -43,10 +43,26 @@ docker-compose exec web flask shell
     This probably needs some work like auto-complete, auto-importing of models, etc.
 
 
-To change the endpoints, update the code in [api/app.py](api/app.py)
+App Specifics:
+- To change the endpoints, update the code in [api/app.py](api/app.py)
+- Task changes should happen in [celery-queue/tasks.py](celery-queue/tasks.py)
+- To add new models, update [api/models.py](api/models.py)
 
-Task changes should happen in [celery-queue/tasks.py](celery-queue/tasks.py)
+- Default User Auth: user1/user1234
+
+
 
 ---
 
 adapted from [https://github.com/itsrifat/flask-celery-docker-scale](https://github.com/itsrifat/flask-celery-docker-scale)
+
+
+
+
+
+------------------------------------
+
+Progress:
+6/19
+- Don't think we need to remove a user from the queue just yet when they close the window. In the future we'd add that functionality of the user getting kicked out of the queue once the window's closed.
+

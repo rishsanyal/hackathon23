@@ -23,6 +23,8 @@ login_manager = LoginManager()
 login_manager.session_protection = "strong"
 login_manager.login_view = "login"
 login_manager.login_message_category = "info"
+login_manager.login_message = "Please log in to access this page."
+# login_manager.redi
 
 migrate = Migrate()
 
@@ -38,6 +40,8 @@ def actually_create_app():
     app.secret_key = 'secret-key'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:root@db:5432/mydb'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # app.config['login_']
 
     CORS(app)
 

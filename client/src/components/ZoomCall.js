@@ -2,8 +2,9 @@ import React from "react";
 
 import "./ZoomCall.css";
 import ZoomMtgEmbedded from "@zoomus/websdk/embedded";
+import OHStudentTable from "./OHStudentTable";
 
-function ZoomCall() {
+function ZoomCall({office_hours_id}) {
     var link =
         "https://us04web.zoom.us/j/71945271375?pwd=0VWTn6dkUj1UwLCEq626eD9nF0pa4g.1";
     const client = ZoomMtgEmbedded.createClient();
@@ -18,6 +19,8 @@ function ZoomCall() {
     var role = 0;
     var userEmail = "johndoe232@gmail.com";
 
+    const [meetingStarted, setMeetingStarted] = React.useState(false);
+
     function getSignature(e) {
         e.preventDefault();
 
@@ -31,6 +34,7 @@ function ZoomCall() {
         })
             .then((res) => res.json())
             .then((response) => {
+                setMeetingStarted(true);
                 startMeeting(response.signature);
             })
             .catch((error) => {
@@ -98,26 +102,31 @@ function ZoomCall() {
             success: (success) => {
                 console.log(success);
 
+                setMeetingStarted(true);
                 // Your success callback code here
             },
         });
 
         client.on("join", () => {
-            console.log("Joined the meeting");
+            setMeetingStarted(true);
+            console.debug("Joined the meeting");
         });
 
         client.on("onShareContentStarted", () => {
             client.setVideoViewSize({ width: 1000, height: 600 });
             client.setActiveSpeakerViewOptions({ noRemoteVideo: true });
             client.setGalleryViewActive(false);
+            setMeetingStarted(true);
         });
         client.on("onShareContentStopped", () => {
             client.setVideoViewSize({ width: 1000, height: 600 });
             client.setActiveSpeakerViewOptions({ noRemoteVideo: false });
             client.setGalleryViewActive(true);
+            setMeetingStarted(true);
         });
 
         client.on("leave", () => {
+            setMeetingStarted(false);
             console.log("Left the meeting");
         });
     }
@@ -125,12 +134,41 @@ function ZoomCall() {
     return (
         <div className="zoomCall">
             <main>
-                <h3>Networks Programming - Prof. Vahab P</h3>
-                <div>
-                    <div id="meetingSDKElement">
-                        {/* Zoom Meeting SDK Component View Rendered Here */}
-                    </div>
-                    <button onClick={getSignature}>Join Meeting</button>
+                <div className="ZoomInteraction" style={
+                    {
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }
+                }>
+                        <div id="meetingSDKElement">
+                            {/* Zoom Meeting SDK Component View Rendered Here */}
+                        </div>
+                        <div id="zoomButton" style={
+                            {
+                                display: {meetingStarted} ? "flex" : "none",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }
+                        }>
+                                { !(meetingStarted) && <button onClick={getSignature} style={
+                                    {
+                                        height: "50px",
+                                        width: "100px",
+                                        margin: "10px",
+                                        backgroundColor: "#007bff",
+                                        color: "white",
+                                        borderRadius: "5px",
+                                        textAlign: "center"
+                                    }
+                                }>
+                                    Join Success
+                                </button>}
+
+                        </div>
+                    <OHStudentTable office_hours_id={office_hours_id} />
                 </div>
             </main>
         </div>

@@ -1,5 +1,6 @@
-FROM node:19-alpine
-RUN mkdir /frontend
+FROM node:20-alpine
+# RUN mkdir /frontend
 WORKDIR /frontend
-COPY package.json /frontend/package.json
+COPY package*.json ./
 RUN npm install
+COPY . .

@@ -2,6 +2,7 @@ import celery.states as states
 from flask import Flask, Response, request
 from flask import url_for, jsonify
 from flask_cors import CORS
+
 from worker import celery
 from flask_sqlalchemy import SQLAlchemy
 from redis_crud_helper import add_student_info
@@ -60,14 +61,13 @@ def add(param1: int, param2: int) -> str:
 
 @app.route('/office_hours_info', methods=['GET'])
 def get_office_hours_info() -> str:
-    print("test")
     return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
 
 
 @app.before_request
 def session_handler():
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=1)
+    app.permanent_session_lifetime = timedelta(hours=10)
 
 @app.route("/", methods=("GET", "POST"), strict_slashes=False)
 def index():
@@ -83,11 +83,17 @@ def login():
             user = User.query.filter_by(username=form.username.data).first()
             if user.password == form.pwd.data:
                 login_user(user)
-                return redirect(url_for('index'))
+                # Add to session the user id
+                session["user_id"] = user.id
+
+                resp = redirect("http://localhost:3000", code=301)
+                resp.set_cookie('user_id', str(user.id))
+
+                return resp
             else:
                 flash("Invalid Username or password!", "danger")
-        except Exception as e:
-            flash(e, "danger")
+        except Exception as err:
+            flash(err, "danger")
 
     return render_template("auth.html",
         form=form,
@@ -95,8 +101,6 @@ def login():
         title="Login",
         btn_action="Login"
         )
-
-
 
 # Register route
 @app.route("/register/", methods=("GET", "POST"), strict_slashes=False)
@@ -151,6 +155,7 @@ def register():
 @app.route("/logout")
 @login_required
 def logout():
+    """Logout path for the user."""
     logout_user()
     return redirect(url_for('login'))
 
@@ -186,35 +191,9 @@ def post_notification_office_hours_turn() -> str:
 
     return jsonify(add_student_notification_office_hours(user_id, office_hours_id, class_id))
 
-
-# @app.route('/check/<string:task_id>')
-# def check_task(task_id: str) -> str:
-#     res = celery.AsyncResult(task_id)
-#     if res.state == states.PENDING:
-#         return res.state
-#     else:
-#         return str(res.result)
-
-
-# @app.route('/health_check')
-# def health_check() -> Response:
-#     return jsonify("OK")
-
-# @app.route('/test/<string:param1>')
-# def test(param1: str) -> str:
-#     redis_db.set('param1', param1)
-#     redis_db.set('param2', 'param2')
-#     print("test2")
-#     return jsonify("OK")
-
 @app.route('/class_info', methods=['GET', 'POST'])
 def class_info() -> str:
     return jsonify(mock_class_info.MOCK_CLASS_INFO)
-
-# @app.route('/office_hours_info', methods=['GET'])
-# def get_office_hours_info() -> str:
-#     print("test")
-#     return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
 
 @app.route('/office_hours_info', methods=['POST'])
 def post_office_hours_info() -> str:
@@ -227,7 +206,7 @@ def post_office_hours_info() -> str:
     return jsonify(mock_office_hours_info.MOCK_OFFICE_HOURS_INFO)
 
 @app.route('/get_students_queue', methods=['GET'])
-def get_students_queue() -> str:
+def get_students_queue():
     """Get students queue for office hours"""""
 
     office_hours_id = request.args.get('office_hours_id')
@@ -237,30 +216,24 @@ def get_students_queue() -> str:
 
     return jsonify(get_students_oh_queue(office_hours_id))
 
-# # @app.route('/update_students_queue', methods=['POST'])
-# # def update_students_queue() -> str:
-# #     user_id = request.args.get('user_id')
-# #     office_hours_id = request.args.get('office_hours_id')
-
-# #     add_student_to_oh_queue(user_id, office_hours_id)
-# #     return jsonify("Student add to OH queue.")
-
-# #     if not office_hours_id:
-# #         return jsonify("Missing parameters"), 400
-
-#     return jsonify(get_students_oh_queue(office_hours_id))
-
 @app.route('/update_students_queue', methods=['POST'])
-def update_students_queue() -> str:
+def update_students_queue() -> Response:
     """Add students to the OH queue"""
-    user_id = request.args.get('user_id')
-    office_hours_id = request.args.get('office_hours_id')
+    data = request.get_json()
+    user_id = data.get('user_id')
+    office_hours_id = data.get('office_hours_id')
 
     if not user_id or not office_hours_id:
-        return jsonify("Missing parameters"), 400
+        app.logger.error("Missing parameters")
+        return Response(
+            "The response body goes here",
+            status=400,
+        )
 
-    add_student_to_oh_queue(user_id, office_hours_id)
-    return jsonify("Student add to OH queue.")
+    curr_students = add_student_to_oh_queue(user_id, office_hours_id)
+
+    # Return new Queue here
+    return jsonify(curr_students)
 
 @app.route('/delete_students_queue', methods=['DELETE'])
 def delete_student_from_queue() -> str:

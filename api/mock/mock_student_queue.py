@@ -2,7 +2,7 @@
 USER_INFO = [
     {
         'user_id': '1',
-        'user_name': 'Jay',
+        'user_name': 'Rishab',
         'is_curr_attendee': True,
         'signed_up_for_oh_notification': True,
         'signed_up_for_queue_notification': True,
@@ -15,7 +15,7 @@ USER_INFO = [
     },
     {
         'user_id': '2',
-        'user_name': 'Rishab',
+        'user_name': 'Jay',
         'is_curr_attendee': False,
         'signed_up_for_oh_notification': True,
         'signed_up_for_queue_notification': True,

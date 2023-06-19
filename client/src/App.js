@@ -5,16 +5,22 @@ import "./App.css";
 import ClassInfo from "./components/ClassInfo";
 import ZoomPage from "./components/ZoomPage";
 
+import { CookiesProvider } from "react-cookie";
+
 function App() {
+
     return (
         <div className="App">
-            {/* <header className="App-header"> */}
-            <Router>
-                <Routes>
-                    <Route path="/" element={<ClassInfo />} />
-                    <Route path="/zoom" element={<ZoomPage />} />
-                </Routes>
-            </Router>
+
+            <CookiesProvider>
+                {/* <header className="App-header"> */}
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<ClassInfo />} />
+                        <Route path="/zoom/:ohId" element={<ZoomPage />} />
+                    </Routes>
+                </Router>
+            </CookiesProvider>
             {/* </header> */}
         </div>
     );

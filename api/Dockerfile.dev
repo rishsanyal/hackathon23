@@ -20,4 +20,7 @@ EXPOSE 5001
 # RUN python manage.py db migrate
 # CMD ["python", "manage.py", "db", "init"]
 
+
+RUN python manage.py
+
 CMD [ "flask", "run", "--host=0.0.0.0", "--port=5001"]

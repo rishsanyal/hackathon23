@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
-zoom_link = "https://zoom.us/j/123456789"
+# zoom_link = "https://zoom.us/j/123456789"
+zoom_link = "http://localhost:3000/zoom"
 
 # Get the current time in UTC and format it as an ISO 8601 string
 curr_time_obj = datetime.utcnow()
@@ -31,27 +32,27 @@ MOCK_OFFICE_HOURS_INFO = {
             "time": str(new_time_obj).split(" ")[1],
             "end_time": str(new_time_obj2).split(" ")[1],
             "date": new_date_obj.isoformat(),
-            "zoom": zoom_link,
+            "zoom": zoom_link + "/" + str(1),
             "oh_id": 1,
             "class_id": 2,
             "class_name": "CS 233",
         },
         {
-            "join": True,
+            "join": False,
             "time": str(new_time_obj).split(" ")[1],
             "end_time": str(new_time_obj2).split(" ")[1],
             "date": (new_date_obj + three_days).isoformat(),
-            "zoom": zoom_link,
+            "zoom": zoom_link + "/" + str(2),
             "oh_id": 2,
             "class_id": 3,
             "class_name": "CS 235",
         },
         {
-            "join": True,
+            "join": False,
             "time": str(new_time_obj).split(" ")[1],
             "end_time": str(new_time_obj2).split(" ")[1],
             "date": (new_date_obj + three_days + three_days).isoformat(),
-            "zoom": zoom_link,
+            "zoom": zoom_link + "/" + str(3),
             "oh_id": 3,
             "class_id": 5,
             "class_name": "CS 237",

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { API_BASE_URL } from "../config";
+
 import {
     Button,
     Table,
@@ -56,7 +57,7 @@ function ClassInfo() {
         fetch(`${API_BASE_URL}/class_info`)
             .then((response) => response.json())
             .then((data) => {
-                setSelectedOption(data.class_info.names[0]); // Select first option by default
+                setSelectedOption(data.class_info[0].class_name); // Select first option by default
                 // setClassData({
                 //     ...classData,
                 //     options: data.class_info.names,
@@ -117,8 +118,14 @@ function ClassInfo() {
     }
 
     return (
-        <div>
-            <h1>
+        <div className="rootNode" style={
+            {
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }
+        }>
+            {/* <h1>
                 <Select
                     value={selectedOption}
                     onChange={handleOptionChange}
@@ -130,61 +137,79 @@ function ClassInfo() {
                         </MenuItem>
                     ))}
                 </Select>
-            </h1>
-            <h2>Office Hours</h2>
+            </h1> */}
+            <div className="office-hours" style={
+                {
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                    width: "80%",
+                }
+            }>
+
+            <h2 style={
+                {
+                    margin: "3%"
+                }
+            }>
+                Office Hours
+            </h2>
             {/* Add table with columns Join, Date Time, Notify, Notify Turn */}
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow key={0}>
-                            <TableCell aling="center">Join</TableCell>
-                            <TableCell align="center">Date</TableCell>
-                            <TableCell align="center">Time</TableCell>
-                            <TableCell align="center">Notify</TableCell>
-                            <TableCell align="center">Notify Turn</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {officeHoursInfo.map((row) => (
-                            <TableRow
-                                key={row.id}
-                                sx={{
-                                    "&:last-child td, &:last-child th": {
-                                        border: 0,
-                                    },
-                                }}
-                            >
-                                {/* <TableCell component="th" scope="row">
-                                    {row.instructor}
-                                </TableCell> */}
-                                <TableCell>
-                                    {/* Add a button that redirects to a link */}
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={() =>
-                                            goToExternalLink(row.zoom)
-                                        }
-                                    >
-                                        {" "}
-                                        Join{" "}
-                                    </Button>
-                                </TableCell>
-                                <TableCell align="center">{row.date}</TableCell>
-                                <TableCell align="center">
-                                    {formatTime(row.date, row.time)}
-                                </TableCell>
-                                <TableCell align="center">
-                                <NotificationTurn  message={"You will be notified when your office hours start!"}></NotificationTurn>
-                                </TableCell>
-                                <TableCell align="center">
-                                    <NotificationTurn message={"You will be notified when your estimated turn comes up!"}></NotificationTurn>
-                                </TableCell>
+                <TableContainer component={Paper}>
+                    <Table sx={{ }} aria-label="simple table">
+                        <TableHead>
+                            <TableRow key={0}>
+                                <TableCell aling="center">Join</TableCell>
+                                <TableCell align="center">Date</TableCell>
+                                <TableCell align="center">Time</TableCell>
+                                <TableCell align="center">Notify</TableCell>
+                                {/* <TableCell align="center">Notify Turn</TableCell> */}
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {officeHoursInfo.map((row) => (
+                                <TableRow
+                                    key={row.id}
+                                    sx={{
+                                        "&:last-child td, &:last-child th": {
+                                            // border: 0,
+                                        },
+                                    }}
+                                >
+                                    {/* <TableCell component="th" scope="row">
+                                        {row.instructor}
+                                    </TableCell> */}
+                                    <TableCell>
+                                        {/* Add a button that redirects to a link */}
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() =>
+                                                goToExternalLink(row.zoom)
+                                            }
+                                        >
+                                            {" "}
+                                            Join{" "}
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell align="center">{row.date}</TableCell>
+                                    <TableCell align="center">
+                                        {formatTime(row.date, row.time)}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                    <NotificationTurn  message={"You will be notified when your office hours start!"}></NotificationTurn>
+                                    </TableCell>
+                                    {/* <TableCell align="center">
+                                        <NotificationTurn message={"You will be notified when your estimated turn comes up!"}></NotificationTurn>
+                                    </TableCell> */}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
         </div>
     );
 }

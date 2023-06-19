@@ -10,7 +10,8 @@ def get_all_usernames() -> str:
     """
 
     # Get all student names from redis
-    return redis_db.keys(USERINFO_QUEUE + '*')
+    for key in redis_db.keys(USERINFO_QUEUE + '*'):
+        print(redis_db.get(key))
 
 def get_student_name_from_id(user_id: int) -> str:
     """Get student name from user id.

@@ -14,9 +14,9 @@ class User(UserMixin, sql_db.Model):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
 
-    id = sql_db.Column(sql_db.Integer, primary_key=True)
+    id = sql_db.Column(sql_db.Integer, primary_key=True, autoincrement=True)
     username = sql_db.Column(sql_db.String(80), unique=True, nullable=False)
-    password = sql_db.Column(sql_db.String(300), nullable=False, unique=True)
+    password = sql_db.Column(sql_db.String(300), nullable=False, unique=False)
     # email = sql_db.Column(sql_db.String(120), unique=True, nullable=False)
     # pwd = sql_db.Column(sql_db.String(300), nullable=False, unique=True)
 
@@ -48,7 +48,13 @@ with app.app_context():
     sql_db.create_all()
 
     if not User.query.filter_by(username='user1').first():
-        sql_db.session.add(User('user1', 'user1234'))
+        tempUser = User('user1', 'user1234')
+        sql_db.session.add(tempUser)
+        sql_db.session.commit()
+
+        tempUserProfile = UserProfile('Test User', 'test@test.com', '1234567890')
+        tempUserProfile.id = tempUser.id
+        sql_db.session.add(tempUserProfile)
         sql_db.session.commit()
 
     users = User.query.all()

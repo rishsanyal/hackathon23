@@ -18,10 +18,10 @@ OH_STUDENT_QUEUE = 'oh_student_queue_'
 # print(next_item.decode())
 
 # QUEUE CRUD
-def populate_user_info_queue(queue_name=QUEUE_NAME) -> None:
+def populate_user_info_queue(queue_name=OH_STUDENT_QUEUE) -> None:
     """Populate the queue with mock data."""
 
-    redis_db.flushdb()
+    # redis_db.flushdb()
     for user in mock_student_queue.USER_INFO:
         redis_db.lpush(queue_name, json.dumps(user))
         add_student_info(int(user['user_id']), user['user_name'])
@@ -32,9 +32,9 @@ def print_user_info_queue(queue_name=QUEUE_NAME) -> None:
     """Print the queue."""
     print(redis_db.lrange(queue_name, 0, -1))
 
-def clear_user_info_queue(queue_name=QUEUE_NAME) -> None:
+def clear_user_info_queue(queue_name=OH_STUDENT_QUEUE) -> None:
     """Clear the queue."""
-    redis_db.flushdb()
+    # redis_db.flushdb()
     populate_user_info_queue()
     print_user_info_queue()
 
@@ -45,34 +45,43 @@ def print_test() -> None:
 ## OFFICE HOURS RELATED FUNCTIONS
 
 def get_students_oh_queue(office_hours_id: int, queue_name=OH_STUDENT_QUEUE) -> list:
-    # """Get the current queue of students for an OH session.
+    # """Get the current queue of student names for an OH session.
 
     # Args:
     #     queue_name (str, optional): Name of the queue. Defaults to QUEUE_NAME.
     # """
     student_ids = redis_db.lrange(queue_name+f"{office_hours_id}", 0, -1)
 
-    student_names = []
+    student_names = set()
 
     for student_id in student_ids:
-        student_name = get_student_name_from_id(student_id)
-        student_names.append(student_name)
+        student_name = get_student_name_from_id(int (student_id))
+        student_names.add(student_name)
 
-    return student_names
+    return list(student_names)
 
-def add_student_to_oh_queue(user_id: str, office_hours_id: int, queue_name=OH_STUDENT_QUEUE) -> None:
+def dummy_populate_oh_queue(office_hours_id: int, queue_name=OH_STUDENT_QUEUE) -> None:
+    """Populate the student queue with mock data."""
+
+    for user in mock_student_queue.USER_INFO:
+        add_student_info(int(user['user_id']), user['user_name'])
+
+    add_student_to_oh_queue('4', office_hours_id)
+    add_student_to_oh_queue('3', office_hours_id)
+
+def add_student_to_oh_queue(user_id: str, office_hours_id: int, queue_name=OH_STUDENT_QUEUE) -> list[str]:
     """Update the queue of students. Add a student to the queue."""
 
     curr = None
-    # for i in mock_student_queue.USER_INFO:
-    #     if i['user_id'] == user_id:
-    #         curr = i
-    #         break
-    # if curr is None:
-    # #     raise ValueError('User not found')
-    # redis_db.lpush(OH_STUDENT_QUEUE + , json.dumps(curr))
+    redis_queue_name = queue_name + f'{office_hours_id}'
+    curr_waiting_students = redis_db.lrange(queue_name + f'{office_hours_id}', 0, -1)
+
+    if user_id in curr_waiting_students:
+        return get_students_oh_queue(office_hours_id)
 
     redis_db.lpush(queue_name + f'{office_hours_id}', user_id)
+
+    return get_students_oh_queue(office_hours_id)
 
 
 def delete_student_from_oh_queue(office_hours_id: int, queue_name=QUEUE_NAME) -> int:
