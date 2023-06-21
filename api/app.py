@@ -26,6 +26,8 @@ login_manager.login_message_category = "info"
 login_manager.login_message = "Please log in to access this page."
 # login_manager.redi
 
+from redis_crud import clear_user_info_queue, dummy_populate_oh_queue
+
 migrate = Migrate()
 
 def actually_create_app():
@@ -55,6 +57,9 @@ def actually_create_app():
     return app
 
 def create_app():
+    clear_user_info_queue()
+    dummy_populate_oh_queue(1)
+
     return actually_create_app()
 
 app = create_app()
