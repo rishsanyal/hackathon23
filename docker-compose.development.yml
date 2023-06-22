@@ -18,40 +18,40 @@ services:
     networks:
         - djangonetwork
     volumes: ['./api:/api']
+  # worker:
+  #   build:
+  #     context: ./celery-queue
+  #     dockerfile: Dockerfile.dev
+  #   command: celery -A tasks worker -l info -E
+  #   environment:
+  #     CELERY_BROKER_URL: redis://redis:6379
+  #     CELERY_RESULT_BACKEND: redis://redis:6379
+  #   depends_on:
+  #     - redis
+  #   volumes: ['./celery-queue:/queue']
+  #   networks:
+  #       - djangonetwork
   worker:
     build:
-      context: ./celery-queue
+      context: ./api
       dockerfile: Dockerfile.dev
-    command: celery -A tasks worker -l info -E
+    command: celery -A api_tasks worker -l info -E
     environment:
       CELERY_BROKER_URL: redis://redis:6379
       CELERY_RESULT_BACKEND: redis://redis:6379
     depends_on:
       - redis
-    volumes: ['./celery-queue:/queue']
+    # volumes: ['./celery-queue:/queue']
+    volumes: ['./api:/api']
     networks:
         - djangonetwork
-  beat:
-    build:
-      context: ./celery-queue
-      dockerfile: Dockerfile.dev
-    command: celery -A tasks beat
-    environment:
-      CELERY_BROKER_URL: redis://redis:6379
-      CELERY_RESULT_BACKEND: redis://redis:6379
-    depends_on:
-      - redis
-    volumes: ['./celery-queue:/queue']
-    networks:
-        - djangonetwork
-
   monitor:
     build:
       context: ./celery-queue
       dockerfile: Dockerfile.dev
     ports:
      - "5555:5555"
-    command:  ['celery', 'flower', '-A', 'tasks']
+    command:  ['celery', 'flower', '-A', 'api_tasks']
     environment:
       CELERY_BROKER_URL: redis://redis
       CELERY_RESULT_BACKEND: redis://redis
@@ -61,6 +61,49 @@ services:
     volumes: ['./celery-queue:/queue']
     networks:
         - djangonetwork
+  beat:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    command: celery -A api_tasks beat
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379
+      CELERY_RESULT_BACKEND: redis://redis:6379
+    depends_on:
+      - redis
+    volumes: ['./celery-queue:/queue']
+    networks:
+        - djangonetwork
+  # beat:
+  #   build:
+  #     context: ./celery-queue
+  #     dockerfile: Dockerfile.dev
+  #   command: celery -A tasks beat
+  #   environment:
+  #     CELERY_BROKER_URL: redis://redis:6379
+  #     CELERY_RESULT_BACKEND: redis://redis:6379
+  #   depends_on:
+  #     - redis
+  #   volumes: ['./celery-queue:/queue']
+  #   networks:
+  #       - djangonetwork
+
+  # monitor:
+  #   build:
+  #     context: ./celery-queue
+  #     dockerfile: Dockerfile.dev
+  #   ports:
+  #    - "5555:5555"
+  #   command:  ['celery', 'flower', '-A', 'tasks']
+  #   environment:
+  #     CELERY_BROKER_URL: redis://redis
+  #     CELERY_RESULT_BACKEND: redis://redis
+  #   depends_on:
+  #     - redis
+  #     - worker
+  #   volumes: ['./celery-queue:/queue']
+  #   networks:
+  #       - djangonetwork
   redis:
     image: redis:alpine
     ports:
