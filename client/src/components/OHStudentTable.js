@@ -52,8 +52,11 @@ function OHStudentTable({office_hours_id}) {
     return (
         <div className="StudentTable" style={
             {
-                border: "1px solid black",
-                borderRadius: "5px",
+                // width: "200px",
+                // display: "flex",
+                // flexDirection: "column",
+                // justifyContent: "center",
+                // alignItems: "center",
             }
         }>
             <List >
@@ -67,7 +70,7 @@ function OHStudentTable({office_hours_id}) {
                 {
                     studentNames.map((studentName, index) => (
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton selected={studentName=="Rishab" ? 1:0}>
                                 <ListItemText primary={studentName} />
                             </ListItemButton>
                         </ListItem>

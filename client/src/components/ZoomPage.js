@@ -40,15 +40,15 @@ function ZoomPage() {
             {
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
+                height: "80vh",
+                width: "80vw",
+                // justifyContent: "center",
+                // alignItems: "center",
             }
         }>
 
             <h3>Networks Programming - Prof. Vahab P</h3>
-            <div>
-                <ZoomCall office_hours_id={ohId} />
-            </div>
+            <ZoomCall office_hours_id={ohId} />
             <TimerComp endTime={endTime} office_hours_id={ohId} />
         </div>
     );

@@ -137,15 +137,43 @@ function ZoomCall({office_hours_id}) {
                 <div className="ZoomInteraction" style={
                     {
                         display: "flex",
-                        flexDirection: "row",
+                        // flexDirection: "row",
                         justifyContent: "center",
                         alignItems: "center",
+                        border: "1px solid black",
+                        height: "80vh",
+                        // width: "80vw",
                     }
                 }>
-                        <div id="meetingSDKElement">
+                        <div
+                            id="zoomSpace"
+                            style={
+                                {
+                                    // marginLeft: "10px",
+                                    left: "0px",
+                                    flex: "8",
+                                    // position: "absolute",
+                                    border: "1px solid black",
+                                    height: "100%",
+                                    width: "80%",
+
+                                }
+                            }
+                        >
                             {/* Zoom Meeting SDK Component View Rendered Here */}
                         </div>
-                        <div id="zoomButton" style={
+                        <div style={{
+                            right: "0px",
+                            flex: "2",
+                            border: "1px solid black",
+                            borderRadius: "5px",
+                            height: "inherit",
+                            width: "10vw",
+                            overflow: "scroll",
+                        }}>
+                            <OHStudentTable office_hours_id={office_hours_id} />
+                        </div>
+                        {/* <div id="zoomButton" style={
                             {
                                 display: {meetingStarted} ? "flex" : "none",
                                 flexDirection: "column",
@@ -167,8 +195,7 @@ function ZoomCall({office_hours_id}) {
                                     Join Success
                                 </button>}
 
-                        </div>
-                    <OHStudentTable office_hours_id={office_hours_id} />
+                        </div> */}
                 </div>
             </main>
         </div>

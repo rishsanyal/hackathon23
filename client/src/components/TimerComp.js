@@ -28,7 +28,12 @@ function TimerComp({ endTime, office_hours_id }) {
     }
 
     return (
-        <div className="timeArea">
+        <div
+            className="timeArea"
+            style={{
+                width: "80%",
+            }}
+        >
             <div className="remainingTime">
                 Remaining time: {timeLeft.hours}:{formatTime(timeLeft.minutes)}:
                 {formatTime(timeLeft.seconds)}
